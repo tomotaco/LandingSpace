@@ -1,13 +1,13 @@
 # LandingSpace
 
-## ‚±‚ÌƒvƒƒWƒFƒNƒg‚É‚Â‚¢‚Ä
-Šµ«”òsƒXƒ^ƒCƒ‹‚ÌƒVƒ…[ƒeƒBƒ“ƒOƒAƒNƒVƒ‡ƒ“ƒQ[ƒ€‚Ì Unity2017.2—pƒvƒƒWƒFƒNƒg‚Å‚·B
-[Unityroom](https://unityroom.com/games/landingspace) ‚É‚ÄƒvƒŒƒC‚Å‚«‚Ü‚·B
+## ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«ã¤ã„ã¦
+æ…£æ€§é£›è¡Œã‚¹ã‚¿ã‚¤ãƒ«ã®ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚²ãƒ¼ãƒ ã® Unity2017.2ç”¨ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã§ã™ã€‚
+[Unityroom](https://unityroom.com/games/landingspace) ã«ã¦ãƒ—ãƒ¬ã‚¤ã§ãã¾ã™ã€‚
 
-1TŠÔƒQ[ƒ€ƒWƒƒƒ€‚Ì‚¨‘èuspacev‚ÅŠJ”­‚µ‚Ü‚µ‚½B
+1é€±é–“ã‚²ãƒ¼ãƒ ã‚¸ãƒ£ãƒ ã®ãŠé¡Œã€Œspaceã€ã§é–‹ç™ºã—ã¾ã—ãŸã€‚
 
-## ƒrƒ‹ƒh•û–@
-ƒrƒ‹ƒh‚É‚ÍˆÈ‰º‚Ì–³—¿ƒAƒZƒbƒg‚ª•K—v‚Å‚·BƒAƒZƒbƒgƒXƒgƒA‚©‚çƒ_ƒEƒ“ƒ[ƒh‚µ‚Ä‰º‚³‚¢B
+## ãƒ“ãƒ«ãƒ‰æ–¹æ³•
+ãƒ“ãƒ«ãƒ‰ã«ã¯ä»¥ä¸‹ã®ç„¡æ–™ã‚¢ã‚»ãƒƒãƒˆãŒå¿…è¦ã§ã™ã€‚ã‚¢ã‚»ãƒƒãƒˆã‚¹ãƒˆã‚¢ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ã¦ä¸‹ã•ã„ã€‚
 
 - [DOTween](https://www.assetstore.unity3d.com/jp/#!/content/27676)
 - [LINQtoGameObject](https://www.assetstore.unity3d.com/jp/#!/content/24256)
@@ -15,21 +15,21 @@
 - [UniRx](https://www.assetstore.unity3d.com/jp/#!/content/17276)
 - [Zenject](https://www.assetstore.unity3d.com/jp/#!/content/17758)
 
-‚Ü‚½AˆÈ‰º‚ÌƒAƒZƒbƒg‚àg—p‚µ‚Ü‚µ‚½‚ªAƒrƒ‹ƒh‚É‚Í•s—v(‚Ì‚Í‚¸)‚Å‚·B
+ã¾ãŸã€ä»¥ä¸‹ã®ã‚¢ã‚»ãƒƒãƒˆã‚‚ä½¿ç”¨ã—ã¾ã—ãŸãŒã€ãƒ“ãƒ«ãƒ‰ã«ã¯ä¸è¦(ã®ã¯ãš)ã§ã™ã€‚
 - [PlayAnimationImporter](https://www.assetstore.unity3d.com/jp/#!/content/24500)
 
-‚³‚ç‚ÉAˆÈ‰º‚ÅŒöŠJ‚³‚ê‚Ä‚¢‚éƒvƒ‰ƒOƒCƒ“EƒTƒ“ƒvƒ‹À‘•‚ğˆê•”C³‚µA–{ƒvƒƒWƒFƒNƒg‚É“¯«‚µ‚Ä‚¢‚Ü‚·B
-(å‚É 2017.2 ‘Î‰‚Æ Zenject ‘Î‰)
+ã•ã‚‰ã«ã€ä»¥ä¸‹ã§å…¬é–‹ã•ã‚Œã¦ã„ã‚‹ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãƒ»ã‚µãƒ³ãƒ—ãƒ«å®Ÿè£…ã‚’ä¸€éƒ¨ä¿®æ­£ã—ã€æœ¬ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«åŒæ¢±ã—ã¦ã„ã¾ã™ã€‚
+(ä¸»ã« 2017.2 å¯¾å¿œã¨ Zenject å¯¾å¿œ)
 - [Leaderboard For Unity WebGL](https://github.com/NCMBMania/LeaderboardForUnityWebGL)
-- [WebGL‚©‚çƒcƒC[ƒg‚·‚éƒTƒ“ƒvƒ‹](https://github.com/naichilab/unityroom-tweet)
+- [WebGLã‹ã‚‰ãƒ„ã‚¤ãƒ¼ãƒˆã™ã‚‹ã‚µãƒ³ãƒ—ãƒ«](https://github.com/naichilab/unityroom-tweet)
 
-## Šµ«”òs‚Ì‘€ì‚É‚â‚İ‚Â‚«‚É‚È‚Á‚½•û‚É‚¨ƒXƒXƒ‚ÌƒQ[ƒ€
+## æ…£æ€§é£›è¡Œã®æ“ä½œã«ã‚„ã¿ã¤ãã«ãªã£ãŸæ–¹ã«ãŠã‚¹ã‚¹ãƒ¡ã®ã‚²ãƒ¼ãƒ 
 
 - [Xpilot](http://www.xpilot.org/)
 - [Gravitron 2](http://store.steampowered.com/app/21300/Gravitron_2/)
 - [Gravity Crash](www.jp.playstation.com/software/title/jp9000npja00047_00gravitycrash0000.html)(Playstaion3), [Gravity Crash Portable](http://www.jp.playstation.com/software/title/jp9000npjg00044_000000111122223333.html)(PSP), [Gravity Crash Ultra](https://www.playstation.com/en-us/games/gravity-crash-ultra-psvita/)(Vita) 
 - [Subspace Continuum](http://store.steampowered.com/app/352700/Subspace_Continuum/)
-- Superspace, Superspace2, Spacecraft (Xbox36 ‚Ì Xbox Live Indies GameAŒöŠJI—¹‚ª‰÷‚â‚Ü‚ê‚Ü‚·)
+- Superspace, Superspace2, Spacecraft (Xbox36 ã® Xbox Live Indies Gameã€å…¬é–‹çµ‚äº†ãŒæ‚”ã‚„ã¾ã‚Œã¾ã™)
 
-ŠCŠO‚Å‚Í "Cave Flyer" ‚Æ‚¢‚¤ƒWƒƒƒ“ƒ‹‚ÅŒÄ‚Î‚ê‚Ä‚¢‚é‚»‚¤‚Å‚·B
+æµ·å¤–ã§ã¯ "Cave Flyer" ã¨ã„ã†ã‚¸ãƒ£ãƒ³ãƒ«ã§å‘¼ã°ã‚Œã¦ã„ã‚‹ãã†ã§ã™ã€‚
 
