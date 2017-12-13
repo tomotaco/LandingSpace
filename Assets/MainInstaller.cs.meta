@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2353c6eae8110ed4ca7fe5636751c049
+timeCreated: 1511635048
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - prefabPlayer: {instanceID: 0}
+  - prefabConnectableCube: {instanceID: 0}
+  - prefabConnectableCylinder: {instanceID: 0}
+  - prefabBreakableCube: {instanceID: 0}
+  - prefabBreakableCylinder: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

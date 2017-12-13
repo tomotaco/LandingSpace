@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Zenject;
+using UniRx;
+using UniRx.Triggers;
+
+public class PlayerController : MonoBehaviour {
+
+    public class Factory : Factory<PlayerController>
+    {
+    }
+
+    [Inject]
+    readonly GameMain gameMain;
+
+    [SerializeField]
+    private float ratioRotate = 5.0f;
+
+    [SerializeField]
+    private float ratioThurst = 15.0f;
+
+    [SerializeField]
+    private float intervalFire = 0.1f;
+
+    private Rigidbody2D rb;
+    private ParticleSystem thurst;
+    private ParticleSystem bullet;
+    private float angle = 0.0f;
+
+    public bool isGrabbingConnector = true;
+
+    [Inject]
+    public void Construct () {
+        this.rb = this.GetComponent<Rigidbody2D>();
+        this.bullet = this.transform.Find("Bullet").GetComponent<ParticleSystem>();
+        this.thurst = this.transform.Find("Thurst").GetComponent<ParticleSystem>();
+        this.FixedUpdateAsObservable().Select(xAxis => Input.GetAxis("Horizontal")).Subscribe(xAxis => {
+            this.angle -= xAxis * ratioRotate;
+            this.rb.MoveRotation(this.angle);
+        });
+        this.FixedUpdateAsObservable()
+            .Where(_ => Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z))
+            .Subscribe(_ => {
+            this.rb.AddForce(this.gameObject.transform.rotation * Vector2.up * this.ratioThurst);
+            this.thurst.Emit(1);
+        });
+        this.FixedUpdateAsObservable()
+            .Where(_ => (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X)))
+            .ThrottleFirst(TimeSpan.FromSeconds(this.intervalFire))
+            .Subscribe(_ => {
+                this.bullet.Emit(1);
+            });
+
+        this.OnCollisionEnter2DAsObservable()
+//            .Where(collision => (collision.otherCollider.CompareTag("Player")))
+            .Subscribe(collision => {
+				Debug.Log("Hit goal!. name=" + collision.gameObject.name + ", tag=" + collision.gameObject.tag + ", " + 
+					"othername=" + collision.otherCollider.gameObject.name + "othertag=" + collision.otherCollider.gameObject.tag);
+        });
+        }
+
+    // Update is called once per frame
+    void Update () {
+        var doesGrab = Input.GetButton("Fire3") || Input.GetKey(KeyCode.C);
+        this.isGrabbingConnector = doesGrab;
+    }
+}
