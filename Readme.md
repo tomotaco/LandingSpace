@@ -27,7 +27,7 @@
 
 - [Xpilot](http://www.xpilot.org/)
 - [Gravitron 2](http://store.steampowered.com/app/21300/Gravitron_2/)
-- [Gravity Crash](www.jp.playstation.com/software/title/jp9000npja00047_00gravitycrash0000.html)(Playstaion3), [Gravity Crash Portable](http://www.jp.playstation.com/software/title/jp9000npjg00044_000000111122223333.html)(PSP), [Gravity Crash Ultra](https://www.playstation.com/en-us/games/gravity-crash-ultra-psvita/)(Vita) 
+- [Gravity Crash](http://www.jp.playstation.com/software/title/jp9000npja00047_00gravitycrash0000.html)(Playstaion3), [Gravity Crash Portable](http://www.jp.playstation.com/software/title/jp9000npjg00044_000000111122223333.html)(PSP), [Gravity Crash Ultra](https://www.playstation.com/en-us/games/gravity-crash-ultra-psvita/)(Vita 北米・EUのみ) 
 - [Subspace Continuum](http://store.steampowered.com/app/352700/Subspace_Continuum/)
 - Superspace, Superspace2, Spacecraft (Xbox36 の Xbox Live Indies Game、公開終了が悔やまれます)
 
