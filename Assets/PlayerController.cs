@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour {
     [Inject]
     readonly GameMain gameMain;
 
+    [Inject (Id = "audioController")]
+    readonly AudioController audioController;
+
     [SerializeField]
     private float ratioRotate = 5.0f;
 
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour {
     private ParticleSystem thurst;
     private ParticleSystem bullet;
     private float angle = 0.0f;
+//    private ReactiveProperty<bool> doesThurst = new ReactiveProperty<bool>(false);
 
     public bool isGrabbingConnector = true;
 
@@ -36,7 +40,12 @@ public class PlayerController : MonoBehaviour {
         this.rb = this.GetComponent<Rigidbody2D>();
         this.bullet = this.transform.Find("Bullet").GetComponent<ParticleSystem>();
         this.thurst = this.transform.Find("Thurst").GetComponent<ParticleSystem>();
-
+/*
+        this.FixedUpdateAsObservable()
+            .Subscribe(_ => {
+                this.doesThurst.Value = Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z);
+            });
+            */
         var fixedUpdateOnGameAsObservable = this.FixedUpdateAsObservable()
             .Where(_ => this.gameMain.state.Value == GameMain.GameState.Game)
             .Publish().RefCount();
@@ -59,12 +68,31 @@ public class PlayerController : MonoBehaviour {
 				this.rb.MoveRotation(this.angle);
             });
 
-        fixedUpdateOnGameAsObservable
-            .Where(_ => Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z))
+        var thurstObservable = fixedUpdateOnGameAsObservable
+            .Where(_ => this.doesThurst()).Publish().RefCount();
+        var notThurstObservable = fixedUpdateOnGameAsObservable
+            .Where(_ => !this.doesThurst()); // .Publish().RefCount();
+        thurstObservable
             .Subscribe(_ => {
             this.rb.AddForce(this.gameObject.transform.rotation * Vector2.up * this.ratioThurst);
             this.thurst.Emit(1);
+            });
+/*
+        thurstObservable
+            .Take(1)
+            .Subscribe(_ => {
+            this.audioController.playThurstHead();
         });
+*/
+        thurstObservable
+            .SelectMany(_ => Observable.Timer(TimeSpan.FromSeconds(0.0f)))
+            .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+            .TakeUntil(notThurstObservable)
+            .RepeatUntilDestroy(this.gameObject)
+            .Subscribe(_ => {
+                this.audioController.playThurstTail();
+            });
+
         fixedUpdateOnGameAsObservable
             .Where(_ => (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X)))
             .ThrottleFirst(TimeSpan.FromSeconds(this.intervalFire))
@@ -80,10 +108,21 @@ public class PlayerController : MonoBehaviour {
             .Where(collider => collider.CompareTag("Goal"))
             .Where(_ => this.rb.velocity.magnitude < 0.001f)
             .Subscribe(collider => {
-            Debug.Log("Hit goal!. tag=" + collider.tag + ", " +
-                "velocity.magnitude=" + this.rb.velocity.magnitude.ToString() + ", rotation=" + this.rb.rotation.ToString());
+                Debug.Log("Hit goal!. tag=" + collider.tag + ", " +
+                    "velocity.magnitude=" + this.rb.velocity.magnitude.ToString() + ", rotation=" + this.rb.rotation.ToString());
                 this.gameMain.finish();
-        });
+            });
+
+        this.OnCollisionEnter2DAsObservable()
+            .Where(_ => this.gameMain.state.Value == GameMain.GameState.Game)
+            .Subscribe(_ => {
+                this.audioController.playBounce();
+            });
+    }
+
+    private bool doesThurst()
+    {
+        return Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z);
     }
 
 }

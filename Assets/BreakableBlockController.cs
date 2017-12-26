@@ -10,6 +10,9 @@ public class BreakableBlockController : MonoBehaviour {
     [Inject]
     readonly GameMain gameMain;
 
+    [Inject(Id = "audioController")]
+    readonly AudioController audioController;
+
     private const int lifeInitial = 20;
 
     [SerializeField]
@@ -17,11 +20,13 @@ public class BreakableBlockController : MonoBehaviour {
 
     private Rigidbody2D rb;
     private Color color;
+    private AudioSource audioSource;
 
     [Inject]
     public void Construct()
     {
         this.rb = this.GetComponent<Rigidbody2D>();
+        this.audioSource = this.GetComponent<AudioSource>();
         this.Reset();
 
         var renderer = this.gameObject.GetComponent<MeshRenderer>();
@@ -33,10 +38,11 @@ public class BreakableBlockController : MonoBehaviour {
 
             material.color = Color.white;
             material.DOColor(this.color, 0.1f);
-            //            DOTween.To(() => material.color, color => material.color = color, this.color, 0.1f);
+            this.audioController.playDamage();
         });
 
         this.life.Where(_ => this.life.Value <= 0).Subscribe(_ => {
+            this.audioController.playDestruction();
             this.gameMain.despawnCharacter(this);
         });
 

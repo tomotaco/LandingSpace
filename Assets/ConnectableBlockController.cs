@@ -7,6 +7,9 @@ public class ConnectableBlockController : MonoBehaviour {
     [Inject]
     readonly GameMain gameMain;
 
+    [Inject(Id = "audioController")]
+    readonly AudioController audioController;
+
     private Rigidbody2D rb;
     private HingeJoint2D joint;
     private PlayerController controllerPlayerConnected;
@@ -36,6 +39,7 @@ public class ConnectableBlockController : MonoBehaviour {
             if (!controllerPlayerConnected.isGrabbingConnector) {
                 this.joint.connectedBody = null;
                 this.joint.enabled = false;
+                this.controllerPlayerConnected = null;
             }
         }
 	}
@@ -54,13 +58,16 @@ public class ConnectableBlockController : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-//        Debug.Log("ConnectableBlockController.OnCollisionEnter2D():tag=" + collision.gameObject.tag);
+        //        Debug.Log("ConnectableBlockController.OnCollisionEnter2D():tag=" + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Connector")) {
-//            Debug.Log("Hit connector");
-            this.joint.enabled = true;
-            this.joint.connectedBody = collision.gameObject.GetComponent<Rigidbody2D>();
-            var transformChain = collision.gameObject.transform.parent;
-            this.controllerPlayerConnected = transformChain.parent.gameObject.GetComponent<PlayerController>();
+            if (this.controllerPlayerConnected == null) {
+                //            Debug.Log("Hit connector");
+                this.joint.enabled = true;
+                this.joint.connectedBody = collision.gameObject.GetComponent<Rigidbody2D>();
+                var transformChain = collision.gameObject.transform.parent;
+                this.controllerPlayerConnected = transformChain.parent.gameObject.GetComponent<PlayerController>();
+                this.audioController.playConnect();
+            }
         }
     }
 }

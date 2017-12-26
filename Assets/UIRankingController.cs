@@ -35,7 +35,7 @@ public class UIRankingController : MonoBehaviour {
                     float y = 40.0f;
                     foreach (var record in scoreData.results) {
                         var inputType = (GameMain.InputType)System.Enum.ToObject(typeof(GameMain.InputType), record.inputType);
-                        var uiRecord = this.rankRecordPool.Spawn(order, record.playerName, record.landingTime, inputType);
+                        var uiRecord = this.rankRecordPool.Spawn(order, record.playerName, record.landingTime, inputType, record.bytesPngScreenShot);
                         uiRecord.transform.SetParent(this.transform);
                         var rectRransform = uiRecord.GetComponent<RectTransform>();
                         rectRransform.localPosition = new Vector3(0.0f, y, 0.0f);
@@ -47,9 +47,11 @@ public class UIRankingController : MonoBehaviour {
                         order++;
                     }
                 }));
+
             });
         this.OnDisableAsObservable()
             .Subscribe(_ => {
+                Debug.Log("UIRankingController.OnDisableAsObservable()");
                 while (0 < this.rankRecords.Count) {
                     var item = this.rankRecords[0];
                     this.rankRecordPool.Despawn(item);

@@ -18,7 +18,7 @@ public class LeaderboardManager : MonoBehaviour
 //    private static readonly string PLAYER_INPUT = "PlayerInput";
     private static readonly string DATASTORE_CLASSNAME = "Leaderboard"; //スコアを保存するデータストア名//
 
-    public IEnumerator SendScore(string playerName, float time, int inputType /* , byte[] bytesJpeg, */ , bool isAllowDuplication = false)
+    public IEnumerator SendScore(string playerName, float time, int inputType, byte[] bytesPng, bool isAllowDuplication = false)
     {
         //ユーザーごとのスコアの重複を許すか//
         if (isAllowDuplication == false)
@@ -30,7 +30,7 @@ public class LeaderboardManager : MonoBehaviour
                 if (time < PlayerPrefs.GetFloat(SHORTEST_TIME))
                 {
                     //レコードの更新//
-                    yield return PutScore(playerName, time, inputType, /* bytesJpeg, */ PlayerPrefs.GetString(OBJECT_ID));
+                    yield return PutScore(playerName, time, inputType, bytesPng, PlayerPrefs.GetString(OBJECT_ID));
                     //ローカルのハイスコアを更新//
                     PlayerPrefs.SetFloat(SHORTEST_TIME, time);
                     PlayerPrefs.SetString(PLAYERNAME, playerName);
@@ -44,13 +44,13 @@ public class LeaderboardManager : MonoBehaviour
             }
         }
 
-        yield return SendScoreUncheck(playerName, time, inputType);
+        yield return SendScoreUncheck(playerName, time, inputType, bytesPng);
     }
 
-    private IEnumerator SendScoreUncheck(string playerName, float time, int inputType)
+    private IEnumerator SendScoreUncheck(string playerName, float time, int inputType, byte[] bytesPng)
     {
         //レコードの新規作成//
-        IEnumerator postScoreCoroutine = PostScore(playerName, time, inputType);
+        IEnumerator postScoreCoroutine = PostScore(playerName, time, inputType, bytesPng);
 
         yield return postScoreCoroutine;
 
@@ -61,11 +61,11 @@ public class LeaderboardManager : MonoBehaviour
         PlayerPrefs.SetString(PLAYERNAME, playerName);//プレイヤーネームを保存 名前を変えたときのチェック用//
     }
 
-    private IEnumerator PostScore(string playerName, float time, int inputType)
+    private IEnumerator PostScore(string playerName, float time, int inputType, byte[] bytesPng)
     {
         Debug.Log(playerName + "のスコア" + time + "(操作: " + inputType.ToString() + ")を新規投稿します。");
 
-        ScoreData scoreData = new ScoreData(playerName, time, inputType);
+        ScoreData scoreData = new ScoreData(playerName, time, inputType, bytesPng);
         NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(scoreData);
 
         IEnumerator coroutine = ncmbRestController.Call(NCMBRestController.RequestType.POST, "classes/" + DATASTORE_CLASSNAME, paramSet);
@@ -77,7 +77,7 @@ public class LeaderboardManager : MonoBehaviour
         yield return paramSet.objectId;
     }
 
-    private IEnumerator PutScore(string playerName, float time, int inputType, /* byte[] bytesJpeg, */ string objectId)
+    private IEnumerator PutScore(string playerName, float time, int inputType, byte[] bytesPng, string objectId)
     {
         string formerPlayerName = PlayerPrefs.GetString(PLAYERNAME);
 
@@ -89,7 +89,7 @@ public class LeaderboardManager : MonoBehaviour
 
         Debug.Log(playerName+"のスコア"+time + "を更新します。レコードのID：" + objectId);
 
-        ScoreData scoreData = new ScoreData(playerName, time, inputType); // , bytesJpeg);
+        ScoreData scoreData = new ScoreData(playerName, time, inputType, bytesPng);
         NCMBDataStoreParamSet paramSet = new NCMBDataStoreParamSet(scoreData);
 
         IEnumerator coroutine = ncmbRestController.Call(
@@ -99,7 +99,7 @@ public class LeaderboardManager : MonoBehaviour
                 if(erroCode == 404)
                 {
                     Debug.Log("レコードID：" + objectId +"が見つからなかったため、新規レコードを作成します");
-                    StartCoroutine(SendScoreUncheck(playerName, time, inputType));
+                    StartCoroutine(SendScoreUncheck(playerName, time, inputType, bytesPng));
                 }
             }
 
@@ -171,15 +171,17 @@ public class LeaderboardManager : MonoBehaviour
     [Serializable]
     public class ScoreData
     {
-        public ScoreData(string playerName, float time, int inputType)
+        public ScoreData(string playerName, float time, int inputType, byte[] bytesPng)
         {
             this.playerName = playerName;
             this.landingTime = time;
             this.inputType = inputType;
+            this.bytesPngScreenShot = bytesPng;
         }
 
         public string playerName;
         public float landingTime;
         public int inputType;
+        public byte[] bytesPngScreenShot;
     }
 }

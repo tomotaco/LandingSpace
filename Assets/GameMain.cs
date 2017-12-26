@@ -38,6 +38,9 @@ public class GameMain : IInitializable, IFixedTickable {
     private List<BreakableBlockController> breakableCubes = new List<BreakableBlockController>();
     private List<BreakableBlockController> breakableCylinders = new List<BreakableBlockController>();
 
+    [Inject(Id = "audioController")]
+    readonly AudioController audioController;
+
     [Inject]
     LeaderboardManager leaderBoardManager;
 
@@ -69,6 +72,9 @@ public class GameMain : IInitializable, IFixedTickable {
     readonly private UIPauseController uiPauseController;
     [Inject(Id = "uiScore")]
     readonly private UIScoreController uiScoreController;
+
+    [Inject(Id = "ScreenShot")]
+    readonly ScreenShotController screenShotController;
 
     public ReactiveProperty<GameState> state = new ReactiveProperty<GameState>(GameState.Title);
     public ReactiveProperty<float> time = new ReactiveProperty<float>(0.0f);
@@ -103,7 +109,11 @@ public class GameMain : IInitializable, IFixedTickable {
         });
 
         this.state.Where(s => s == GameState.Finish).Subscribe(_ => {
-//            this.uiFinishController.takeScreenshot();
+            this.screenShotController.takeScreenShot();
+        });
+        this.state.Where(s => s == GameState.Finish)
+            .Delay(System.TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => {
             this.uiFadeIn(this.uiFinishController);
             if (this.shortestTime.Value < float.Epsilon ||
                 this.time.Value < this.shortestTime.Value)
@@ -143,6 +153,7 @@ public class GameMain : IInitializable, IFixedTickable {
 
     public void start()
     {
+        this.audioController.playStart();
         clearCharacters();
         initCharacters();
         this.state.Value = GameState.Ready;
@@ -150,21 +161,25 @@ public class GameMain : IInitializable, IFixedTickable {
 
     public void finish()
     {
+        this.audioController.playGoal();
         this.state.Value = GameState.Finish;
     }
 
     public void title()
     {
+        this.audioController.playSelect();
         this.state.Value = GameState.Title;
     }
 
     public void config()
     {
+        this.audioController.playSelect();
         this.state.Value = GameState.Config;
     }
 
     public void ranking()
     {
+        this.audioController.playSelect();
         this.state.Value = GameState.Ranking;
     }
 
@@ -228,11 +243,27 @@ public class GameMain : IInitializable, IFixedTickable {
                 controller.gameObject.SetActive(false);
             });
         }
-        var images = controller.GetComponentsInChildren<Image>(true);
-        foreach (var image in images) {
+        var imagesButton = controller.gameObject.Descendants().Where(x => x.name.StartsWith("Button")).Select(obj => obj.GetComponent<Image>()).ToArray();
+        foreach (var image in imagesButton) {
             image.DOFade(alphaButtonImage, 0.0f);
             image.DOFade(0.0f, timeToFade);
         }
+        var imagesOther = controller.gameObject.Descendants()
+            .Where(x => !x.name.StartsWith("Button") && x.GetComponent<Image>() != null)
+            .Select(obj => obj.GetComponent<Image>()).ToArray();
+        foreach (var image in imagesOther) {
+            image.DOFade(1.0f, 0.0f);
+            image.DOFade(0.0f, timeToFade);
+        }
+        var rawImages = controller.gameObject.Descendants()
+            .Where(x => !x.name.StartsWith("Button") && x.GetComponent<RawImage>() != null)
+            .Where(x => x.GetComponent<RawImage>().texture != null)
+            .Select(obj => obj.GetComponent<RawImage>()).ToArray();
+        foreach (var rawImage in rawImages) {
+            rawImage.DOFade(1.0f, 0.0f);
+            rawImage.DOFade(0.0f, timeToFade);
+        }
+
     }
 
     public void uiFadeIn(MonoBehaviour controller, float timeToFade = timeToFadeDefault)
@@ -248,7 +279,9 @@ public class GameMain : IInitializable, IFixedTickable {
             image.DOFade(0.0f, 0.0f);
             image.DOFade(alphaButtonImage, timeToFade);
         }
-        var imagesOther = controller.gameObject.Descendants().Where(x => !x.name.StartsWith("Button") && x.GetComponent<Image>() != null).Select(obj => obj.GetComponent<Image>()).ToArray();
+        var imagesOther = controller.gameObject.Descendants()
+            .Where(x => !x.name.StartsWith("Button") && x.GetComponent<Image>() != null)
+            .Select(obj => obj.GetComponent<Image>()).ToArray();
         foreach (var image in imagesOther) {
             image.DOFade(0.0f, 0.0f);
             image.DOFade(1.0f, timeToFade);

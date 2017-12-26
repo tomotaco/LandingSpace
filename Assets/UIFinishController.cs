@@ -29,9 +29,14 @@ public class UIFinishController : MonoBehaviour {
     [Inject(Id = "InputName")]
     readonly private TMP_InputField inputName;
 
+    [Inject(Id = "RawImageResult")]
+    readonly private RawImage rawImageResult;
+
+    [Inject(Id = "ScreenShot")]
+    readonly ScreenShotController screenShotController;
+
     private TextMeshProUGUI textResultTime;
     private TextMeshProUGUI textNewRecord;
-    public Texture2D textureScreenShot;
 
     private Sequence sequenceBlink;
 
@@ -46,9 +51,12 @@ public class UIFinishController : MonoBehaviour {
             .Select(_ => (this.gameMain.time.Value < this.gameMain.shortestTime.Value ||
                             this.gameMain.shortestTime.Value < Mathf.Epsilon))
         .Subscribe(isShortest => {
-                Debug.Log("UIFinishController.OnEnableAsObservable(): time=" + this.gameMain.time.Value +
-                    ", shortestTime=" + this.gameMain.shortestTime.Value + ", isShortest=" + isShortest.ToString());
-                this.textNewRecord.enabled = isShortest;
+            Debug.Log("UIFinishController.OnEnableAsObservable(): time=" + this.gameMain.time.Value +
+                ", shortestTime=" + this.gameMain.shortestTime.Value + ", isShortest=" + isShortest.ToString());
+
+            this.rawImageResult.texture = this.screenShotController.textureScreenShot;
+
+            this.textNewRecord.enabled = isShortest;
             if (isShortest) {
                 this.gameMain.uiFadeIn(this.inputName);
                 this.gameMain.uiFadeIn(this.buttonRegister);
@@ -68,8 +76,8 @@ public class UIFinishController : MonoBehaviour {
         this.buttonRegister.OnClickAsObservable()
             .Subscribe(_ => {
                 var typeInput = PlayerPrefs.GetInt("PlayerInput", (int)(GameMain.InputType.RotateByLeftRight));
-                var bytesScreenShot = this.textureScreenShot.EncodeToJPG();
-            StartCoroutine(this.leaderBoardManager.SendScore(this.inputName.text, this.gameMain.time.Value, typeInput, false)); //, bytesScreenShot));
+                var bytesScreenShot = this.screenShotController.textureScreenShot.EncodeToPNG();
+            StartCoroutine(this.leaderBoardManager.SendScore(this.inputName.text, this.gameMain.time.Value, typeInput, bytesScreenShot, false));
                 this.gameMain.uiFadeOut(this);
                 this.gameMain.title();
             });
@@ -92,20 +100,6 @@ public class UIFinishController : MonoBehaviour {
         sequenceBlink.Append(this.textNewRecord.DOFade(1.0f, 0.1f));
         sequenceBlink.SetLoops(-1);
 
-        this.textureScreenShot = new Texture2D(Screen.width / 2, Screen.height / 2, TextureFormat.RGB24, false, false);
-    }
-
-    public void takeScreenShot()
-    {
-        StartCoroutine(this.takeScreenShotEnumerator());
-    }
-    private IEnumerator takeScreenShotEnumerator()
-    {
-        yield return new WaitForEndOfFrame();
-        Debug.Log("Screen(" + Screen.width.ToString() + ", " + Screen.height.ToString() + "), " +
-                "tex(" + this.textureScreenShot.width.ToString() + ", " + this.textureScreenShot.height.ToString() + ")");
-        //            this.textureScreenShot.ReadPixels(new Rect(Screen.width / 4, Screen.height / 4, Screen.width / 2, Screen.height / 2), 0, 0);
-        this.textureScreenShot.ReadPixels(new Rect(0, 0, Screen.width / 2, Screen.height / 2), 0, 0);
     }
 
 }
