@@ -160,11 +160,11 @@ namespace NCMBRest
                 builder.Append(string.Format("&limit={0}", ncmbObjectRest.Limit));
             }
             if (!string.IsNullOrEmpty(ncmbObjectRest.SortColumn)) {
-                builder.Append(string.Format("&order={0}", WWW.EscapeURL(ncmbObjectRest.SortColumn)));
+                builder.Append(string.Format("&order={0}", UnityWebRequest.EscapeURL(ncmbObjectRest.SortColumn)));
             }
 
             if (!string.IsNullOrEmpty(ncmbObjectRest.FieldsAsJson)) {
-                builder.Append(string.Format("&where={0}", WWW.EscapeURL(ncmbObjectRest.FieldsAsJson)));
+                builder.Append(string.Format("&where={0}", UnityWebRequest.EscapeURL(ncmbObjectRest.FieldsAsJson)));
             }
             return builder.ToString();
         }

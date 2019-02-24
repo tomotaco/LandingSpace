@@ -20,13 +20,13 @@ public class BreakableBlockController : MonoBehaviour {
 
     private Rigidbody2D rb;
     private Color color;
-    private AudioSource audioSource;
+//    private AudioSource audioSource;
 
     [Inject]
     public void Construct()
     {
         this.rb = this.GetComponent<Rigidbody2D>();
-        this.audioSource = this.GetComponent<AudioSource>();
+//        this.audioSource = this.GetComponent<AudioSource>();
         this.Reset();
 
         var renderer = this.gameObject.GetComponent<MeshRenderer>();
@@ -48,7 +48,7 @@ public class BreakableBlockController : MonoBehaviour {
 
     }
 
-    public class Factory : Factory<BreakableBlockController>
+    public class Factory : PlaceholderFactory<BreakableBlockController>
     {
     }
 

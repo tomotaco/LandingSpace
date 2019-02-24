@@ -13,7 +13,7 @@ using Zenject;
 public class UITitleController : MonoBehaviour {
 
     [Inject]
-    private GameMain gameMain;
+    readonly GameMain gameMain;
 
     [Inject(Id = "buttonStart")]
     private Button buttonStart;

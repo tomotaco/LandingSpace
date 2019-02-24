@@ -11,8 +11,8 @@ public class MainInstaller : MonoInstaller<MainInstaller>
     public override void InstallBindings()
     {
         Container.Bind<GameMain>().AsSingle().NonLazy();
-        Container.Bind<IInitializable>().To<GameMain>().AsSingle();
-        Container.Bind<IFixedTickable>().To<GameMain>().AsSingle();
+        Container.Bind<IInitializable>().To<GameMain>().FromResolve();
+        Container.Bind<IFixedTickable>().To<GameMain>().FromResolve();
 
         Container.Bind<NCMBRestController>().AsSingle().WithArguments(applicationKey, clientKey).NonLazy();
         Container.Bind<LeaderboardManager>().FromNewComponentOnNewGameObject().WithGameObjectName("LeaderBoardGameObject").AsSingle();
@@ -39,11 +39,11 @@ public class MainInstaller : MonoInstaller<MainInstaller>
         Container.BindFactory<BreakableBlockController, BreakableBlockController.Factory>().WithId("breakableCylinderFactory").FromComponentInNewPrefabResource("Prefabs/BreakableCylinder");
 
 		// MemoryPools
-        Container.BindMemoryPool<ConnectableBlockController, ConnectableBlockController.Pool>().WithInitialSize(20).WithId("connectableCubePool").FromComponentInNewPrefabResource("Prefabs/ConnectableCube").UnderTransformGroup("ConnectableCubes");
-        Container.BindMemoryPool<ConnectableBlockController, ConnectableBlockController.Pool>().WithInitialSize(20).WithId("connectableCylinderPool").FromComponentInNewPrefabResource("Prefabs/ConnectableCylinder").UnderTransformGroup("ConnectableCylinders");
-        Container.BindMemoryPool<BreakableBlockController, BreakableBlockController.Pool>().WithInitialSize(20).WithId("breakableCubePool").FromComponentInNewPrefabResource("Prefabs/BreakableCube").UnderTransformGroup("BreakableCubes");
-        Container.BindMemoryPool<BreakableBlockController, BreakableBlockController.Pool>().WithInitialSize(20).WithId("breakableCylinderPool").FromComponentInNewPrefabResource("Prefabs/BreakableCylinder").UnderTransformGroup("BreakableCylinders");
+        Container.BindMemoryPool<ConnectableBlockController, ConnectableBlockController.Pool>().WithId("connectableCubePool").WithInitialSize(20).FromComponentInNewPrefabResource("Prefabs/ConnectableCube").UnderTransformGroup("ConnectableCubes");
+        Container.BindMemoryPool<ConnectableBlockController, ConnectableBlockController.Pool>().WithId("connectableCylinderPool").WithInitialSize(20).FromComponentInNewPrefabResource("Prefabs/ConnectableCylinder").UnderTransformGroup("ConnectableCylinders");
+        Container.BindMemoryPool<BreakableBlockController, BreakableBlockController.Pool>().WithId("breakableCubePool").WithInitialSize(20).FromComponentInNewPrefabResource("Prefabs/BreakableCube").UnderTransformGroup("BreakableCubes");
+        Container.BindMemoryPool<BreakableBlockController, BreakableBlockController.Pool>().WithId("breakableCylinderPool").WithInitialSize(20).FromComponentInNewPrefabResource("Prefabs/BreakableCylinder").UnderTransformGroup("BreakableCylinders");
 
-        Container.BindMemoryPool<UIRankRecordController, UIRankRecordController.Pool>().WithInitialSize(20).WithId("rankRecordPool").FromComponentInNewPrefabResource("Prefabs/RankRecord").UnderTransformGroup("RankingRecords");
+        Container.BindMemoryPool<UIRankRecordController, UIRankRecordController.Pool>().WithId("rankRecordPool").WithInitialSize(20).FromComponentInNewPrefabResource("Prefabs/RankRecord").UnderTransformGroup("RankingRecords");
     }
 }

@@ -14,7 +14,7 @@ public class ConnectableBlockController : MonoBehaviour {
     private HingeJoint2D joint;
     private PlayerController controllerPlayerConnected;
 
-    public class Factory : Factory<ConnectableBlockController>
+    public class Factory : PlaceholderFactory<ConnectableBlockController>
     {
     }
     public class Pool : MonoMemoryPool<Vector2, Vector2, float, ConnectableBlockController>

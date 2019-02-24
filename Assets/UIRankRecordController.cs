@@ -17,7 +17,7 @@ public class UIRankRecordController : MonoBehaviour {
 
     private Texture2D textureScreenShot;
 
-    public class Factory : Factory<UIRankRecordController>
+    public class Factory : PlaceholderFactory<UIRankRecordController>
     {
     }
 

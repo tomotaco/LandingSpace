@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.Runtime.InteropServices;
 
 namespace naichilab
@@ -27,11 +28,11 @@ namespace naichilab
 
             var sb = new StringBuilder();
             sb.Append(SHAREURL);
-            sb.Append("&url=" + WWW.EscapeURL(gameUrl));
-            sb.Append("&original_referer=" + WWW.EscapeURL(webglUrl));
-            sb.Append("&text=" + WWW.EscapeURL(text));
+            sb.Append("&url=" + UnityWebRequest.EscapeURL(gameUrl));
+            sb.Append("&original_referer=" + UnityWebRequest.EscapeURL(webglUrl));
+            sb.Append("&text=" + UnityWebRequest.EscapeURL(text));
             if (hashtags.Any()) {
-                sb.Append("&hashtags=" + WWW.EscapeURL(string.Join(",", hashtags)));
+                sb.Append("&hashtags=" + UnityWebRequest.EscapeURL(string.Join(",", hashtags)));
             }
 
             if (Application.platform == RuntimePlatform.WebGLPlayer) {

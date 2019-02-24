@@ -8,7 +8,7 @@ using UniRx.Triggers;
 
 public class PlayerController : MonoBehaviour {
 
-    public class Factory : Factory<PlayerController>
+    public class Factory : PlaceholderFactory<PlayerController>
     {
     }
 
