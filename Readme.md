@@ -1,7 +1,7 @@
 # LandingSpace
 
 ## このプロジェクトについて
-慣性飛行スタイルのシューティングアクションゲームの Unity2017.2用プロジェクトです。
+慣性飛行スタイルのシューティングアクションゲームの Unity2018.3用プロジェクトです。
 [Unityroom](https://unityroom.com/games/landingspace) にてプレイできます。
 
 1週間ゲームジャムのお題「space」で開発しました。
@@ -24,7 +24,7 @@
 - [PlayAnimationImporter](https://www.assetstore.unity3d.com/jp/#!/content/24500)
 
 さらに、以下で公開されているプラグイン・サンプル実装を一部修正し、本プロジェクトに同梱しています。
-(主に 2017.2 対応と Zenject 対応)
+(主に 2018.3 対応と Zenject 対応)
 - [Leaderboard For Unity WebGL](https://github.com/NCMBMania/LeaderboardForUnityWebGL)
 - [WebGLからツイートするサンプル](https://github.com/naichilab/unityroom-tweet)
 
